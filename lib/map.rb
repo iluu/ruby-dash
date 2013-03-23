@@ -92,15 +92,19 @@ class Map < Hash
   end
 
   def update_gravity
-    get_stones.each do |stone|
-      obj_below = get(stone.x, stone.y+1)
-      if obj_below == nil
-        stone.fall
+    get_gravity_aware_obj.each do |obj|
+      obj_below = get(obj.x, obj.y+1)
+      if obj_below == nil && !is_player_below(obj)
+        fall_down(obj)
       end
     end
   end
 
   private
+
+  def is_player_below(obj)
+    get_player.x == obj.x && get_player.y == (obj.y + 1)
+  end
 
   def remove_from_objects(object)
     @objects.delete(object)
@@ -108,6 +112,11 @@ class Map < Hash
 
   def remove_from_map(x, y)
     set(x, y, nil)
+  end
+
+  def replace_on_map(old_x, old_y, object)
+    set(old_x, old_y, nil)
+    set(object.x, object.y, object)
   end
 
   def remove_from_types(object)
@@ -123,8 +132,8 @@ class Map < Hash
     @types['Monster']
   end
 
-  def get_stones
-    @types['Ball']
+  def get_gravity_aware_obj
+    @types['Ball'] + @types['Ruby']
   end
 
   def get_player
@@ -134,5 +143,11 @@ class Map < Hash
   def move_monster_to(x, y, monster)
     remove_from_map(monster.x, monster.y)
     monster.move(x, y)
+  end
+
+  def fall_down(object)
+    old_x, old_y = object.x, object.y
+    object.fall
+    replace_on_map(old_x, old_y, object)
   end
 end

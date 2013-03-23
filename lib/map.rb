@@ -64,6 +64,30 @@ class Map < Hash
     remove_from_types object
   end
 
+  def move_player(x, y)
+    player = get_player
+    new_x, new_y = player.x + x, player.y + y
+    object_on_the_way = get(new_x, new_y)
+
+    if can_move_player_to? object_on_the_way
+      remove_object object_on_the_way
+      player.move x, y
+    end
+  end
+
+  def move_monsters
+    get_monsters.each do |m|
+      moved = false
+      until moved
+
+        new_x, new_y = rand(-1..1), rand(-1..1)
+        if (moved = (get(m.x + new_x, m.y + new_y) == nil))
+          m.move(new_x, new_y)
+        end
+      end
+    end
+  end
+
   private
 
   def remove_from_objects(object)
@@ -77,5 +101,17 @@ class Map < Hash
   def remove_from_types(object)
     name = object.class.name.split('::').last
     @types[name].delete(object)
+  end
+
+  def can_move_player_to?(object_on_the_way)
+    object_on_the_way == nil or object_on_the_way.is_a?(Ruby) or object_on_the_way.is_a?(Ground)
+  end
+
+  def get_monsters
+    @types['Monster']
+  end
+
+  def get_player
+    @types['Player'].first
   end
 end

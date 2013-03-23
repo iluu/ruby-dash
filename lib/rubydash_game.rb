@@ -21,7 +21,6 @@ class RubydashGame
     @points = 0
     @map = Map.new
 
-
     #game start
     load_map(MAP_LVL_MAPPING[2])
     reset_speed
@@ -29,9 +28,7 @@ class RubydashGame
 
   def load_map(file)
     @map.load_map file
-    puts @map.types.keys
     @player = @map.types['Player'].first
-    @monsters = @map.types['Monster']
     @rubies = @map.types['Ruby']
     @rubies ||= []
   end
@@ -67,16 +64,7 @@ class RubydashGame
   end
 
   def update_monsters
-    for m in @monsters
-        moved = false
-        until moved
-
-          new_x, new_y = rand(-1..1), rand(-1..1)
-          if (moved = (@map.get(m.x + new_x, m.y + new_y) == nil))
-            m.move(new_x, new_y)
-          end
-        end
-    end
+    @map.move_monsters
   end
 
   def update_tick_count
@@ -117,31 +105,10 @@ class RubydashGame
   end
 
   def move(x, y)
-    new_x, new_y = @player.x + x, @player.y + y
-    object_on_the_way = @map.get(new_x, new_y)
-
-    if can_move_player_to? object_on_the_way
-      @map.remove_object object_on_the_way
-      @player.move x, y
-    end
-  end
-
-  def eat_left
-
-  end
-
-  def eat_right
-
+    @map.move_player x, y
   end
 
   def exit
     Kernel.exit
   end
-
-  private
-
-  def can_move_player_to?(object_on_the_way)
-    object_on_the_way == nil or object_on_the_way.is_a?(Ruby) or object_on_the_way.is_a?(Ground)
-  end
-
 end

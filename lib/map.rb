@@ -77,13 +77,15 @@ class Map < Hash
 
   def move_monsters
     get_monsters.each do |m|
-      moved = false
-      until moved
 
-        new_x, new_y = rand(-1..1), rand(-1..1)
-        if (moved = (get(m.x + new_x, m.y + new_y) == nil))
-          m.move(new_x, new_y)
-        end
+      if get(m.x + 1, m.y) == nil
+        m.move(1, 0)
+      elsif get(m.x, m.y - 1) == nil
+        m.move(0, -1)
+      elsif get(m.x - 1, m.y) == nil
+        m.move(-1, 0)
+      elsif get(m.x, m.y + 1) == nil
+        m.move(0, 1)
       end
     end
   end

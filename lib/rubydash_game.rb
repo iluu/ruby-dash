@@ -85,7 +85,7 @@ class RubydashGame
 
   def textbox_content
     "Rubies: #{@eaten_rubies}/#{@rubies.size} " +
-        "Points: #{@points}"
+        "Points: #@points"
   end
 
   def move_right

@@ -7,7 +7,9 @@ class RubydashGame
 
   MAP_LVL_MAPPING = {
       1 => '../data/lvl1.map',
-      2 => '../data/lvl2.map'
+      2 => '../data/lvl2.map',
+      3 => '../data/lvl3.map',
+      4 => '../data/lvl4.map'
   }
 
   #Requires width and height params
@@ -19,7 +21,7 @@ class RubydashGame
 
 
     #game start
-    load_map(MAP_LVL_MAPPING[2])
+    load_map(MAP_LVL_MAPPING[3])
     reset_speed
   end
 
@@ -28,6 +30,7 @@ class RubydashGame
     puts @map.types.keys
     start = @map.types['Player'].first
     @player = Player.new(start.x, start.y)
+    @monsters = @map.types['Monster']
   end
 
   def reset_speed
@@ -97,7 +100,6 @@ class RubydashGame
 
     @player.move x, y
   end
-
 
   def eat_left
 

@@ -47,7 +47,8 @@ class RubydashGame
         ?a => :move_left,
         ?d => :move_right,
         ?A => :eat_left,
-        ?D => :eat_right
+        ?D => :eat_right,
+        ?q => :exit
     }
   end
 
@@ -106,6 +107,8 @@ class RubydashGame
 
   end
 
-
+  def exit
+    Kernel.exit
+  end
 
 end

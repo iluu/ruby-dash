@@ -1,3 +1,5 @@
+$LOAD_PATH << File.expand_path('.')
+
 require 'player'
 
 class Map < Hash
@@ -39,7 +41,6 @@ class Map < Hash
       self.set(x, y, instance)
 
       name = obj.name.split('::').last
-      puts name
       @types[name] ||= []
       @types[name].push(instance)
     end

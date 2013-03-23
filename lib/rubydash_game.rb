@@ -56,11 +56,22 @@ class RubydashGame
 
   #Called for every loop cycle
   def tick
-    @ticks +=1
+    update_monsters
+    update_tick_count
+  end
+
+  def update_monsters
+  #  for m in @monsters
+  #    m.move
+  #  end
+  end
+
+  def update_tick_count
+    @ticks += 1
   end
 
   def wait?
-    true
+    false
   end
 
   def sleep_time

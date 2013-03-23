@@ -47,6 +47,10 @@ class Ball < Struct.new(:x, :y)
   def color
     Curses::COLOR_BLUE
   end
+
+  def fall
+    self.y += 1
+  end
 end
 
 class Exit < Struct.new(:x, :y)

@@ -58,9 +58,14 @@ class RubydashGame
   #Called for every loop cycle
   def tick
     update_tick_count
+    update_gravity
     if @ticks % 4 == 0
       update_monsters
     end
+  end
+
+  def update_gravity
+    @map.update_gravity
   end
 
   def update_monsters

@@ -91,6 +91,15 @@ class Map < Hash
     end
   end
 
+  def update_gravity
+    get_stones.each do |stone|
+      obj_below = get(stone.x, stone.y+1)
+      if obj_below == nil
+        stone.fall
+      end
+    end
+  end
+
   private
 
   def remove_from_objects(object)
@@ -112,6 +121,10 @@ class Map < Hash
 
   def get_monsters
     @types['Monster']
+  end
+
+  def get_stones
+    @types['Ball']
   end
 
   def get_player

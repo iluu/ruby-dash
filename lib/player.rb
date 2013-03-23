@@ -59,7 +59,7 @@ end
 
 class Exit < Struct.new(:x, :y)
   def char
-    'EE'
+    'E'
   end
 
   def color

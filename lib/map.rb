@@ -1,5 +1,3 @@
-$LOAD_PATH << File.expand_path('.')
-
 require 'player'
 
 class Map < Hash
@@ -40,13 +38,8 @@ class Map < Hash
       @objects.push instance
 
       name = obj.name.split('::').last
-      puts name
       @types[name] ||= []
       @types[name].push(instance)
     end
   end
 end
-
-
-map = Map.new
-map.load_map('../data/lvl1.map')

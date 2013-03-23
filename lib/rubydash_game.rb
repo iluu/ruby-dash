@@ -118,11 +118,12 @@ class RubydashGame
 
   def move(x, y)
     new_x, new_y = @player.x + x, @player.y + y
-    if other_obj = @map.get(new_x, new_y)
-      @map.remove_object(other_obj)
-    end
+    object_on_the_way = @map.get(new_x, new_y)
 
-    @player.move x, y
+    if can_move_player_to? object_on_the_way
+      @map.remove_object object_on_the_way
+      @player.move x, y
+    end
   end
 
   def eat_left
@@ -135,6 +136,12 @@ class RubydashGame
 
   def exit
     Kernel.exit
+  end
+
+  private
+
+  def can_move_player_to?(object_on_the_way)
+    object_on_the_way == nil or object_on_the_way.is_a?(Ruby) or object_on_the_way.is_a?(Ground)
   end
 
 end

@@ -154,4 +154,10 @@ class RubydashGame
   def exit
     Kernel.exit
   end
+
+  def reload
+    gained_points = @original_map_rubies_number - @rubies.size
+    @player.points -= gained_points
+    reset_vars
+  end
 end

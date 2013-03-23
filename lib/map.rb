@@ -71,6 +71,7 @@ class Map < Hash
 
     if can_move_player_to? object_on_the_way
       remove_object object_on_the_way
+      remove_from_map player.x, player.y
       player.move x, y
     end
   end
@@ -79,13 +80,13 @@ class Map < Hash
     get_monsters.each do |m|
 
       if get(m.x + 1, m.y) == nil
-        m.move(1, 0)
+        move_monster_to(1, 0, m)
       elsif get(m.x, m.y - 1) == nil
-        m.move(0, -1)
+        move_monster_to(0, -1, m)
       elsif get(m.x - 1, m.y) == nil
-        m.move(-1, 0)
+        move_monster_to(-1, 0, m)
       elsif get(m.x, m.y + 1) == nil
-        m.move(0, 1)
+        move_monster_to(0, 1, m)
       end
     end
   end
@@ -115,5 +116,10 @@ class Map < Hash
 
   def get_player
     @types['Player'].first
+  end
+
+  def move_monster_to(x, y, monster)
+    remove_from_map(monster.x, monster.y)
+    monster.move(x, y)
   end
 end

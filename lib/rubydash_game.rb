@@ -17,11 +17,13 @@ class RubydashGame
     @ticks = 100
     @width = width
     @height = height
+    @eaten_rubies = 0
+    @points = 0
     @map = Map.new
 
 
     #game start
-    load_map(MAP_LVL_MAPPING[3])
+    load_map(MAP_LVL_MAPPING[2])
     reset_speed
   end
 
@@ -30,6 +32,8 @@ class RubydashGame
     puts @map.types.keys
     @player = @map.types['Player'].first
     @monsters = @map.types['Monster']
+    @rubies = @map.types['Ruby']
+    @rubies ||= []
   end
 
   def reset_speed
@@ -92,7 +96,8 @@ class RubydashGame
   end
 
   def textbox_content
-    'This is the text box content!'
+    "Rubies: #{@eaten_rubies}/#{@rubies.size} " +
+        "Points: #{@points}"
   end
 
   def move_right

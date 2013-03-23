@@ -17,21 +17,27 @@ class RubydashGame
     @ticks = 100
     @width = width
     @height = height
+    @current_map_number = 1
+
+    reset_vars
+  end
+
+  def reset_vars
     @original_map_rubies_number = 0
     @map = Map.new
     @player_killed = false
 
     #game start
-    load_map(MAP_LVL_MAPPING[2])
-    @textbox_msg = "Rubies: #{@original_map_rubies_number - @rubies.size}/#{@original_map_rubies_number} " +
-        "Points: #{@player.points}"
-
+    load_map(MAP_LVL_MAPPING[@current_map_number])
     reset_speed
   end
 
   def load_map(file)
+    @map = Map.new
     @map.load_map file
+    p = @player ? @player.points : 0
     @player = @map.types['Player'].first
+    @player.points = p
     @rubies = @map.types['Ruby']
     @rubies ||= []
     @original_map_rubies_number = @rubies.length
@@ -110,7 +116,8 @@ class RubydashGame
   end
 
   def textbox_content
-    txt = @textbox_msg
+    txt = "Rubies: #{@original_map_rubies_number - @rubies.size}/#{@original_map_rubies_number} " +
+        "Points: #{@player.points}"
 
     if @player_killed
        txt += "\tYou were killed! Press 'x' to try again!"
@@ -137,9 +144,20 @@ class RubydashGame
 
   def move(x, y)
     @map.move_player x, y
+
+    if @map.is_finished
+      @current_map_number += 1
+      reset_vars
+    end
   end
 
   def exit
     Kernel.exit
+  end
+
+  def reload
+    gained_points = @original_map_rubies_number - @rubies.size
+    @player.points -= gained_points
+    reset_vars
   end
 end

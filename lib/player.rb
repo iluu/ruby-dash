@@ -2,9 +2,9 @@ class Player < Struct.new(:x, :y)
 
   attr_accessor :points
 
-  def initialize(x, y)
+  def initialize(x, y, p=0)
     super x, y
-    @points = 0
+    @points = p
   end
 
   def char

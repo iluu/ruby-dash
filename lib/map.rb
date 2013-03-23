@@ -4,7 +4,7 @@ require 'player'
 require 'util'
 
 class Map < Hash
-  attr_accessor :objects, :types
+  attr_accessor :objects, :types, :is_finished
 
   OBJECT_MAPPING = {
       'g' => Ground,
@@ -20,6 +20,7 @@ class Map < Hash
   def initialize
     @objects = []
     @types = {}
+    @is_finished = false
   end
 
   def load_map(file)
@@ -77,6 +78,8 @@ class Map < Hash
 
       if object_on_the_way.is_a? Ruby
         player.increase_points
+      elsif object_on_the_way.is_a? Exit
+        @is_finished = true
       end
     elsif can_player_push_obj?(object_on_the_way, x, y)
       remove_from_map player.x, player.y
@@ -144,7 +147,7 @@ class Map < Hash
   end
 
   def can_move_player_to?(object_on_the_way)
-    object_on_the_way == nil or object_on_the_way.is_a?(Ruby) or object_on_the_way.is_a?(Ground)
+    object_on_the_way == nil or object_on_the_way.is_a?(Ruby) or object_on_the_way.is_a?(Ground) or object_on_the_way.is_a? Exit
   end
 
   def can_player_push_obj?(object_on_the_way, x, y)
@@ -162,11 +165,14 @@ class Map < Hash
   end
 
   def get_monsters
-    @types['Monster']
+    @types['Monster'] ? @types['Monster'] : []
   end
 
   def get_gravity_aware_obj
-    @types['Ball'] + @types['Ruby']
+    ball_array = @types['Ball'] ? @types['Ball'] : []
+    ruby_array = @types['Ruby'] ? @types['Ruby'] : []
+
+    ball_array + ruby_array
   end
 
   def get_player

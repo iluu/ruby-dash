@@ -78,6 +78,10 @@ class Map < Hash
       if object_on_the_way.is_a? Ruby
         player.increase_points
       end
+    elsif can_player_push_obj?(object_on_the_way, x, y)
+      remove_from_map player.x, player.y
+      player.move x, y
+      push_object object_on_the_way, x, y
     end
   end
 
@@ -143,6 +147,20 @@ class Map < Hash
     object_on_the_way == nil or object_on_the_way.is_a?(Ruby) or object_on_the_way.is_a?(Ground)
   end
 
+  def can_player_push_obj?(object_on_the_way, x, y)
+    object_on_the_way.is_a?(Ball) and
+      is_push_movement(x, y) and
+      can_be_pushed(object_on_the_way, x)
+  end
+
+  def can_be_pushed(object_on_the_way, x)
+    get(object_on_the_way.x + x, object_on_the_way.y) == nil
+  end
+
+  def is_push_movement(x, y)
+    y == 0 && x != 0
+  end
+
   def get_monsters
     @types['Monster']
   end
@@ -165,6 +183,12 @@ class Map < Hash
   def fall_down(object)
     old_x, old_y = object.x, object.y
     object.fall
+    replace_on_map(old_x, old_y, object)
+  end
+
+  def push_object(object, x, y)
+    old_x, old_y = object.x, object.y
+    object.move x, y
     replace_on_map(old_x, old_y, object)
   end
 end

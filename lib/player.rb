@@ -98,6 +98,10 @@ class Ball < Struct.new(:x, :y)
     @is_falling = true
   end
 
+  def move(x, y)
+    self.x += x
+    self.y += y
+  end
 end
 
 class Exit < Struct.new(:x, :y)

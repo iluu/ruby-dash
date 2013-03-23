@@ -74,12 +74,14 @@ class RubydashGame
 
   #Called for every loop cycle
   def tick
-    update_tick_count
+    unless @player_killed
+      update_tick_count
 
-    @player_killed = update_gravity
+      @player_killed = update_gravity
 
-    if @ticks % 4 == 0
-      update_monsters
+      if @ticks % 4 == 0
+        @player_killed = update_monsters
+      end
     end
   end
 

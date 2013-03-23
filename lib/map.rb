@@ -86,17 +86,16 @@ class Map < Hash
 
       x_move, y_move = Directions.get_move_for_direction(m.get_preferable_direction)
       if get(m.x + x_move, m.y + y_move) == nil
-        move_monster_to(x_move, y_move, m)
-        return
+        return move_monster_to(x_move, y_move, m)
       end
 
       x_move, y_move = Directions.get_random_move
       if get(m.x + x_move, m.y + y_move) == nil
-        move_monster_to(x_move, y_move, m)
-        return
+        return move_monster_to(x_move, y_move, m)
       end
 
     end
+    false
   end
 
   def update_gravity
@@ -159,6 +158,8 @@ class Map < Hash
   def move_monster_to(x, y, monster)
     remove_from_map(monster.x, monster.y)
     monster.move(x, y)
+
+    get_player.x == monster.x && get_player.y == monster.y
   end
 
   def fall_down(object)

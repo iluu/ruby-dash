@@ -1,5 +1,3 @@
-$LOAD_PATH << File.expand_path('.')
-
 require 'player'
 
 class Map < Hash
@@ -38,6 +36,7 @@ class Map < Hash
     if (obj = OBJECT_MAPPING[char])
       instance = obj.new(x, y)
       @objects.push instance
+      self.set(x, y, instance)
 
       name = obj.name.split('::').last
       puts name
@@ -45,8 +44,14 @@ class Map < Hash
       @types[name].push(instance)
     end
   end
+
+  def get(x, y)
+    self[x][y] if self[x]
+  end
+
+  def set(x, y, value)
+    self[x] = {} unless self[x]
+    self[x][y] = value
+  end
+
 end
-
-
-map = Map.new
-map.load_map('../data/lvl1.map')

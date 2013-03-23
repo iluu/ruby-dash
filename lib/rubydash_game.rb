@@ -12,13 +12,15 @@ class RubydashGame
 
   #Requires width and height params
   def initialize(width, height)
+    @ticks = 100
     @width = width
     @height = height
     @map = Map.new
 
+
     #game start
     load_map(MAP_LVL_MAPPING[2])
-
+    reset_speed
   end
 
   def load_map(file)
@@ -28,9 +30,13 @@ class RubydashGame
     @player = Player.new(start.x, start.y)
   end
 
+  def reset_speed
+    @speed = 0
+  end
+
   #Array of objects that are displayed on the screen
   def objects
-    @map.objects
+    [@player] + @map.objects
   end
 
   #Mapping between keyboard keys and game actions
@@ -47,6 +53,7 @@ class RubydashGame
 
   #Called for every loop cycle
   def tick
+    @ticks +=1
   end
 
   def wait?
@@ -70,16 +77,26 @@ class RubydashGame
   end
 
   def move_left
-
+    move -1, 0 if @player.x > 0
   end
 
   def move_up
-
+    move 0, -1 if @player.y > 0
   end
 
   def move_down
-
+    move 0, 1 if @player.y < @height -1
   end
+
+  def move(x, y)
+    new_x, new_y = @player.x + x, @player.y + y
+    if other_obj = @map.get(new_x, new_y)
+      #TODO: add some condition checking
+    end
+
+    @player.move x, y
+  end
+
 
   def eat_left
 

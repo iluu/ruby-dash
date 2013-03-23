@@ -1,4 +1,12 @@
 class Player < Struct.new(:x, :y)
+
+  attr_accessor :points
+
+  def initialize(x, y)
+    super x, y
+    @points = 0
+  end
+
   def char
     '@'
   end
@@ -10,6 +18,10 @@ class Player < Struct.new(:x, :y)
 
   def color
     Curses::COLOR_YELLOW
+  end
+
+  def increase_points
+    @points += 1
   end
 
 end

@@ -53,6 +53,15 @@ class Monster < Struct.new(:x, :y)
 end
 
 class Ruby < Struct.new(:x, :y)
+  attr_accessor :is_falling
+
+  def initialize(x, y)
+    self.x = x
+    self.y = y
+    @is_falling = false
+  end
+
+
   def char
     'R'
   end
@@ -63,10 +72,19 @@ class Ruby < Struct.new(:x, :y)
 
   def fall
     self.y += 1
+    @is_falling = true
   end
 end
 
 class Ball < Struct.new(:x, :y)
+  attr_accessor :is_falling
+
+  def initialize(x, y)
+    self.x = x
+    self.y = y
+    @is_falling = false
+  end
+
   def char
     'O'
   end
@@ -77,7 +95,9 @@ class Ball < Struct.new(:x, :y)
 
   def fall
     self.y += 1
+    @is_falling = true
   end
+
 end
 
 class Exit < Struct.new(:x, :y)

@@ -1,6 +1,7 @@
 $LOAD_PATH << File.expand_path('.')
 
 require 'player'
+require 'util'
 
 class Map < Hash
   attr_accessor :objects, :types
@@ -79,15 +80,18 @@ class Map < Hash
   def move_monsters
     get_monsters.each do |m|
 
-      if get(m.x + 1, m.y) == nil
-        move_monster_to(1, 0, m)
-      elsif get(m.x, m.y - 1) == nil
-        move_monster_to(0, -1, m)
-      elsif get(m.x - 1, m.y) == nil
-        move_monster_to(-1, 0, m)
-      elsif get(m.x, m.y + 1) == nil
-        move_monster_to(0, 1, m)
+      x_move, y_move = Directions.get_move_for_direction(m.get_preferable_direction)
+      if get(m.x + x_move, m.y + y_move) == nil
+        move_monster_to(x_move, y_move, m)
+        return
       end
+
+      x_move, y_move = Directions.get_random_move
+      if get(m.x + x_move, m.y + y_move) == nil
+        move_monster_to(x_move, y_move, m)
+        return
+      end
+
     end
   end
 

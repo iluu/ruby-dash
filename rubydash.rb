@@ -44,5 +44,3 @@ end
 
 
 show_logo
-
-

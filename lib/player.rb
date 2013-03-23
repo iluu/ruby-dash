@@ -15,6 +15,12 @@ class Player < Struct.new(:x, :y)
 end
 
 class Monster < Struct.new(:x, :y)
+
+  def initialize(x, y)
+    super x, y
+    @direction = :right
+  end
+
   def char
     'S'
   end
@@ -22,10 +28,15 @@ class Monster < Struct.new(:x, :y)
   def move(x, y)
     self.x += x
     self.y += y
+    @direction = Directions.get_direction_for_move x, y
   end
 
   def color
     Curses::COLOR_YELLOW
+  end
+
+  def get_preferable_direction
+    @direction
   end
 end
 

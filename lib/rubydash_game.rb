@@ -28,8 +28,7 @@ class RubydashGame
   def load_map(file)
     @map.load_map file
     puts @map.types.keys
-    start = @map.types['Player'].first
-    @player = Player.new(start.x, start.y)
+    @player = @map.types['Player'].first
     @monsters = @map.types['Monster']
   end
 

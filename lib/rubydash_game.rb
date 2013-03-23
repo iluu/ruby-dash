@@ -17,8 +17,7 @@ class RubydashGame
     @ticks = 100
     @width = width
     @height = height
-    @eaten_rubies = 0
-    @points = 0
+    @original_map_rubies_number = 0
     @map = Map.new
 
     #game start
@@ -31,6 +30,7 @@ class RubydashGame
     @player = @map.types['Player'].first
     @rubies = @map.types['Ruby']
     @rubies ||= []
+    @original_map_rubies_number = @rubies.length
   end
 
   def reset_speed
@@ -89,8 +89,8 @@ class RubydashGame
   end
 
   def textbox_content
-    "Rubies: #{@eaten_rubies}/#{@rubies.size} " +
-        "Points: #@points"
+    "Rubies: #{@original_map_rubies_number - @rubies.size}/#{@original_map_rubies_number} " +
+        "Points: #{@player.points}"
   end
 
   def move_right

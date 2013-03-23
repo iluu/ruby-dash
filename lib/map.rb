@@ -74,6 +74,10 @@ class Map < Hash
       remove_object object_on_the_way
       remove_from_map player.x, player.y
       player.move x, y
+
+      if object_on_the_way.is_a? Ruby
+        player.increase_points
+      end
     end
   end
 

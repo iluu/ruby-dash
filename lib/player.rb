@@ -48,6 +48,10 @@ class Ruby < Struct.new(:x, :y)
   def color
     Curses::COLOR_RED
   end
+
+  def fall
+    self.y += 1
+  end
 end
 
 class Ball < Struct.new(:x, :y)
@@ -66,7 +70,7 @@ end
 
 class Exit < Struct.new(:x, :y)
   def char
-    'EE'
+    'E'
   end
 
   def color

@@ -55,4 +55,27 @@ class Map < Hash
     self[x][y] = value
   end
 
+  def remove_object(object)
+    return if object == nil
+
+    x, y = object.x, object.y
+    remove_from_objects object
+    remove_from_map x, y
+    remove_from_types object
+  end
+
+  private
+
+  def remove_from_objects(object)
+    @objects.delete(object)
+  end
+
+  def remove_from_map(x, y)
+    set(x, y, nil)
+  end
+
+  def remove_from_types(object)
+    name = object.class.name.split('::').last
+    @types[name].delete(object)
+  end
 end

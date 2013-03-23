@@ -92,7 +92,7 @@ class RubydashGame
   def move(x, y)
     new_x, new_y = @player.x + x, @player.y + y
     if other_obj = @map.get(new_x, new_y)
-      #TODO: add some condition checking
+      @map.remove_object(other_obj)
     end
 
     @player.move x, y

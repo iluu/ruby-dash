@@ -20,9 +20,13 @@ class RubydashGame
     @eaten_rubies = 0
     @points = 0
     @map = Map.new
+    @player_killed = false
 
     #game start
     load_map(MAP_LVL_MAPPING[2])
+    @textbox_msg = "Rubies: #{@eaten_rubies}/#{@rubies.size} " +
+        "Points: #{@points}"
+
     reset_speed
   end
 
@@ -44,21 +48,36 @@ class RubydashGame
 
   #Mapping between keyboard keys and game actions
   def input_map
-    {
-        ?w => :move_up,
-        ?s => :move_down,
-        ?a => :move_left,
-        ?d => :move_right,
-        ?A => :eat_left,
-        ?D => :eat_right,
-        ?q => :exit
-    }
+    if @player_killed
+      keymap = {
+          ?x => :reload,
+          ?q => :exit
+      }
+    else
+      keymap =
+          {
+              ?w => :move_up,
+              ?s => :move_down,
+              ?a => :move_left,
+              ?d => :move_right,
+              ?A => :eat_left,
+              ?D => :eat_right,
+              ?q => :exit
+          }
+    end
+    keymap
+  end
+
+  def reload
+
   end
 
   #Called for every loop cycle
   def tick
     update_tick_count
-    update_gravity
+
+    @player_killed = update_gravity
+
     if @ticks % 4 == 0
       update_monsters
     end
@@ -89,8 +108,13 @@ class RubydashGame
   end
 
   def textbox_content
-    "Rubies: #{@eaten_rubies}/#{@rubies.size} " +
-        "Points: #@points"
+    txt = @textbox_msg
+
+    if @player_killed
+       txt += "\tYou were killed! Press 'x' to try again!"
+    end
+
+    txt
   end
 
   def move_right

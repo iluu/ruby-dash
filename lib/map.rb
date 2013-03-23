@@ -97,11 +97,19 @@ class Map < Hash
 
   def update_gravity
     get_gravity_aware_obj.each do |obj|
+      if obj.is_falling && is_player_below(obj)
+        return true
+      end
+
       obj_below = get(obj.x, obj.y+1)
       if obj_below == nil && !is_player_below(obj)
         fall_down(obj)
+      else
+        obj.is_falling = false
       end
     end
+
+    false
   end
 
   private

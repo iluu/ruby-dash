@@ -19,9 +19,9 @@ class Monster < Struct.new(:x, :y)
     'S'
   end
 
-  def move
-    self.x += 1
-    self.y += 1
+  def move(x, y)
+    self.x += x
+    self.y += y
   end
 
   def color

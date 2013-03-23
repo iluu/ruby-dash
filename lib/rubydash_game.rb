@@ -56,14 +56,23 @@ class RubydashGame
 
   #Called for every loop cycle
   def tick
-    update_monsters
     update_tick_count
+    if @ticks % 4 == 0
+      update_monsters
+    end
   end
 
   def update_monsters
-  #  for m in @monsters
-  #    m.move
-  #  end
+    for m in @monsters
+        moved = false
+        until moved
+
+          new_x, new_y = rand(-1..1), rand(-1..1)
+          if (moved = (@map.get(m.x + new_x, m.y + new_y) == nil))
+            m.move(new_x, new_y)
+          end
+        end
+    end
   end
 
   def update_tick_count

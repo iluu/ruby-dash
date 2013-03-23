@@ -77,6 +77,8 @@ class Map < Hash
 
       if object_on_the_way.is_a? Ruby
         player.increase_points
+      elsif object_on_the_way.is_a? Exit
+
       end
     end
   end
